@@ -4,14 +4,28 @@ import numpy as np
 
 from campaign import Campaign
 
+# set local for currency
 locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
-NUM_AD_CAMPAIGNS = 8
-NUM_CUSTOMERS = 10000000
 
+# INITIALIZE THE ENVIRONMENT
+# total campaigns
+NUM_AD_CAMPAIGNS = 8
+# total Customers
+NUM_CUSTOMERS = 10000000
+# list of campaigns
 campaigns = []
+
+# the random number generator seed
+np.random.seed(367)
 
 
 def try_campaign(campaign):
+    """
+    try an ad campaign on a customer, and record whether a sale occurred.
+    :param campaign: the campaign to be tried
+    :type campaign: class:'Campaign'
+    :return: None
+    """
     if np.random.random() <= campaign.conversion_rate:
         campaign.sales += 1
     else:
@@ -19,6 +33,10 @@ def try_campaign(campaign):
 
 
 def create_campaign():
+    """
+    create all the ad campaigns
+    :return: None
+    """
     for c in range(NUM_AD_CAMPAIGNS):
         campaigns.append(Campaign(c))
         e_c_p_t = campaigns[c].expected_profit_per_trial()
@@ -27,18 +45,35 @@ def create_campaign():
 
 
 def customer_campaign():
+    """
+    try all campaigns on all customers and record the accepted campaign for each of them.
+    :return:
+    """
     for customer in range(NUM_CUSTOMERS):
+        # campaign index selected to show to the customer
         accepted_campaign_id = -1
         best_beta_value = -1
         for campaign in campaigns:
+            # using Thompson Sampling ...
             campaign_beta_value = np.random.beta(campaign.actual_profit_per_trial() + 1., NUM_AD_CAMPAIGNS / 2.)
+            # accepting the campaign with the largest beta value
             if campaign_beta_value > best_beta_value:
                 best_beta_value = campaign_beta_value
                 accepted_campaign_id = campaign.id
 
         try_campaign(campaigns[accepted_campaign_id])
+
+
+def analyse():
+    """
+    compare Thompson sampling and Uniform sampling for this problem
+    :return: None
+    """
+
+    # define variables to hold total profits
     total_profit_thompson_sampling = 0
     total_profit_uniform_sampling = 0
+    # number of customers per campaign, uniformly assigned
     uniform_customers_per_campaign = NUM_CUSTOMERS / NUM_AD_CAMPAIGNS
 
     for campaign in campaigns:
@@ -62,3 +97,4 @@ def customer_campaign():
 if __name__ == '__main__':
     create_campaign()
     customer_campaign()
+    analyse()
