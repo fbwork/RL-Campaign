@@ -64,4 +64,4 @@ class Campaign:
 
     def __str__(self):
         return f"Campaign ({self.id}): c_rate: {self.conversion_rate}, " \
-               f"average_profit_per_sale: {self.average_profit_per_sale}"
+               f"average profit per sale: {self.average_profit_per_sale}"
