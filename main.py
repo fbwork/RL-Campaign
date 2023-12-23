@@ -37,7 +37,8 @@ def create_campaign():
     create all the ad campaigns
     :return: None
     """
-
+    
+    print("\nCampaigns info:")
     for c in range(NUM_AD_CAMPAIGNS):
         campaigns.append(Campaign(c))
         e_c_p_t = campaigns[c].expected_profit_per_trial()
@@ -63,6 +64,8 @@ def customer_campaign():
             if campaign_beta_value > best_beta_value:
                 best_beta_value = campaign_beta_value
                 accepted_campaign_id = campaign.id
+                
+        print("\nSome of the results:")
         if customer % 20000 == 0:
             print(f"\ncampaign {accepted_campaign_id} accepted for customer {customer}")
         try_campaign(campaigns[accepted_campaign_id])
