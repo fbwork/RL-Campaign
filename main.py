@@ -1,7 +1,6 @@
 import locale
 
 import numpy as np
-
 from campaign import Campaign
 
 # set local for currency
@@ -26,6 +25,7 @@ def try_campaign(campaign):
     :type campaign: class:'Campaign'
     :return: None
     """
+
     if np.random.random() <= campaign.conversion_rate:
         campaign.sales += 1
     else:
@@ -37,6 +37,7 @@ def create_campaign():
     create all the ad campaigns
     :return: None
     """
+
     for c in range(NUM_AD_CAMPAIGNS):
         campaigns.append(Campaign(c))
         e_c_p_t = campaigns[c].expected_profit_per_trial()
@@ -49,6 +50,8 @@ def customer_campaign():
     try all campaigns on all customers and record the accepted campaign for each of them.
     :return:
     """
+
+    print("\nTrying Campaigns on Customers ...")
     for customer in range(NUM_CUSTOMERS):
         # campaign index selected to show to the customer
         accepted_campaign_id = -1
@@ -60,7 +63,8 @@ def customer_campaign():
             if campaign_beta_value > best_beta_value:
                 best_beta_value = campaign_beta_value
                 accepted_campaign_id = campaign.id
-
+        if customer % 20000 == 0:
+            print(f"\ncampaign {accepted_campaign_id} accepted for customer {customer}")
         try_campaign(campaigns[accepted_campaign_id])
 
 
@@ -69,7 +73,7 @@ def analyse():
     compare Thompson sampling and Uniform sampling for this problem
     :return: None
     """
-
+    print("Analysing ....")
     # define variables to hold total profits
     total_profit_thompson_sampling = 0
     total_profit_uniform_sampling = 0
