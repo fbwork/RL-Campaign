@@ -37,7 +37,7 @@ def create_campaign():
     create all the ad campaigns
     :return: None
     """
-    
+
     print("\nCampaigns info:")
     for c in range(NUM_AD_CAMPAIGNS):
         campaigns.append(Campaign(c))
@@ -53,6 +53,7 @@ def customer_campaign():
     """
 
     print("\nTrying Campaigns on Customers ...")
+    print("\nSome results are:")
     for customer in range(NUM_CUSTOMERS):
         # campaign index selected to show to the customer
         accepted_campaign_id = -1
@@ -65,7 +66,6 @@ def customer_campaign():
                 best_beta_value = campaign_beta_value
                 accepted_campaign_id = campaign.id
                 
-        print("\nSome of the results:")
         if customer % 20000 == 0:
             print(f"\ncampaign {accepted_campaign_id} accepted for customer {customer}")
         try_campaign(campaigns[accepted_campaign_id])
